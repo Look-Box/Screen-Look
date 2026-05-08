@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>V4K Pro - Advanced Text Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-container">
+        <div id="media-wrapper">
+            <video id="v4k-video" autoplay playsinline></video>
+            <canvas id="draw-layer"></canvas>
+            <div id="shape-container"></div>
+        </div>
+        
+        <div id="text-edit-controls" class="hidden">
+            <span class="material-symbols-outlined" style="opacity:0.6; font-size: 20px;">font_download</span>
+            
+            <div class="custom-dropdown" id="font-dropdown" title="Font Style">
+                <div class="dropdown-selected" id="font-selected" style="font-family: system-ui, sans-serif">Default</div>
+                <div class="dropdown-options" id="font-options">
+                    <div class="dropdown-option" data-value="system-ui, sans-serif" style="font-family: system-ui, sans-serif">Default</div>
+                    <div class="dropdown-option" data-value="Arial, sans-serif" style="font-family: Arial, sans-serif">Arial</div>
+                    <div class="dropdown-option" data-value="'Courier New', monospace" style="font-family: 'Courier New', monospace">Courier</div>
+                    <div class="dropdown-option" data-value="Georgia, serif" style="font-family: Georgia, serif">Georgia</div>
+                    <div class="dropdown-option" data-value="Impact, sans-serif" style="font-family: Impact, sans-serif">Impact</div>
+                    <div class="dropdown-option" data-value="'Comic Sans MS', cursive" style="font-family: 'Comic Sans MS', cursive">Comic Sans</div>
+                </div>
+            </div>
+            
+            <span class="material-symbols-outlined" style="opacity:0.6; font-size: 20px; margin-left: 4px;">palette</span>
+            <input type="color" id="floating-color" class="color-picker" title="Text Color" style="width: 28px; height: 28px;"> 
+            
+            <span class="material-symbols-outlined" style="opacity:0.6; font-size: 20px; margin-left: 4px;">format_size</span>
+            
+            <div class="slider-container" title="Font Size">
+                <input type="range" id="floating-size" class="custom-range" min="12" max="150" value="36">
+                <span class="size-readout" id="size-readout">36px</span>
+            </div>
+            
+            <div class="divider" style="margin: 0 4px;"></div>
+            
+            <button class="btn-text-action" onclick="deleteActiveText()" title="Delete">
+                <span class="material-symbols-outlined" style="font-size: 20px;">delete</span>
+            </button>
+            <button class="btn-text-action" onclick="deselectText()" title="Done">
+                <span class="material-symbols-outlined" style="font-size: 20px;">check</span>
+            </button>
+        </div>
+
+        <div id="ui-layer" class="hidden">
+            <div class="controls draw-settings-bar" id="draw-settings">
+                <div class="color-wrapper" id="draw-color-wrapper" title="Color">
+                    <input type="color" id="color-picker" class="color-picker" value="#ff3b30">
+                </div>
+                <div id="draw-size-wrapper" style="display:flex; align-items:center;">
+                    <input type="range" id="line-width" class="custom-range" min="1" max="30" value="5" title="Pen Size" style="width: 100px;">
+                </div>
+            </div>
+            <div class="bottom-bars">
+                <div class="controls sys-bar">
+                    <button class="icon-btn" id="btn-cam" onclick="pickV4K()" title="Select Camera"><span class="material-symbols-outlined">usb</span><span class="shortcut-badge">1</span></button>
+                    <button class="icon-btn" onclick='executeAction("fullscreen")' title="Full Screen"><span class="material-symbols-outlined">fullscreen</span><span class="shortcut-badge">2</span></button>
+                    <button class="icon-btn" onclick='executeAction("mirror")' title="Mirror"><span class="material-symbols-outlined">flip</span><span class="shortcut-badge">3</span></button>
+                    <button class="icon-btn" onclick='executeAction("rotate")' title="Rotate 180°"><span class="material-symbols-outlined">rotate_right</span><span class="shortcut-badge">4</span></button>
+                    <button class="icon-btn" onclick='executeAction("clear")' title="Clear All Ink"><span class="material-symbols-outlined">delete</span><span class="shortcut-badge">5</span></button>
+                </div>
+                <div class="controls draw-bar">
+                    <button class="icon-btn" id="btn-draw" onclick='setTool("draw")' title="Pen Tool (Cycle Color with 6)"><span class="material-symbols-outlined">draw</span><span class="shortcut-badge">6</span></button>
+                    <button class="icon-btn" id="btn-eraser" onclick='setTool("eraser")' title="Eraser Tool"><span class="material-symbols-outlined">ink_eraser</span><span class="shortcut-badge">7</span></button>
+                    <button class="icon-btn" id="btn-circle" onclick='setTool("circle")' title="Draw Circle"><span class="material-symbols-outlined">circle</span><span class="shortcut-badge">8</span></button>
+                    <button class="icon-btn" id="btn-square" onclick='setTool("square")' title="Draw Square"><span class="material-symbols-outlined">square</span><span class="shortcut-badge">9</span></button>
+                </div>
+                <div class="controls media-bar">
+                    <button class="icon-btn" id="btn-text" onclick='setTool("text")' title="Add Text"><span class="material-symbols-outlined">title</span><span class="shortcut-badge">T</span></button>
+                    <button class="icon-btn" onclick="triggerImageUpload()" title="Insert Image"><span class="material-symbols-outlined">image</span><span class="shortcut-badge">I</span></button>
+                    <input type="file" id="image-upload" accept="image/*" style="display:none">
+                </div>
+            </div>
+        </div>
+        
+        <div id="status-panel">
+            <div class="status-dot" id="dot-cam" title="Camera Connection"></div>
+            <div class="status-dot" id="dot-draw" title="Pen Tool Active"></div>
+            <div class="status-dot" id="dot-shape" title="Shape/Text Tool Active"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
